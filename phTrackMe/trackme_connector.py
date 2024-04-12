@@ -545,7 +545,7 @@ class TrackmeConnector(BaseConnector):
         self.save_progress("Machine Leaning Outliers training successful")
         return action_result.set_status(phantom.APP_SUCCESS)
 
-    def _handle_mk_outliers_run_monitor(self, param):
+    def _handle_ml_outliers_run_monitor(self, param):
 
         self.save_progress(
             "In action handler for: {0}".format(self.get_action_identifier())
@@ -1355,8 +1355,8 @@ class TrackmeConnector(BaseConnector):
         if action_id == "ml_outliers_train_models":
             ret_val = self._handle_ml_outliers_train_models(param)
 
-        if action_id == "mk_outliers_run_monitor":
-            ret_val = self._handle_mk_outliers_run_monitor(param)
+        if action_id == "ml_outliers_run_monitor":
+            ret_val = self._handle_ml_outliers_run_monitor(param)
 
         if action_id == "ml_outliers_reset_models":
             ret_val = self._handle_ml_outliers_reset_models(param)
@@ -1373,10 +1373,74 @@ class TrackmeConnector(BaseConnector):
         if action_id == "component_manage_entity":
             ret_val = self._handle_component_manage_entity(param)
 
+        if action_id == "smart_status":
+            ret_val = self._handle_smart_status(param)
+
         if action_id == "test_connectivity":
             ret_val = self._handle_test_connectivity(param)
 
         return ret_val
+
+    def _handle_smart_status(self, param):
+
+        self.save_progress(
+            "In action handler for: {0}".format(self.get_action_identifier())
+        )
+
+        # Add an action result object to self (BaseConnector) to represent the action for this param
+        action_result = self.add_action_result(ActionResult(dict(param)))
+
+        # Parameters
+        tenant_id = param["tenant_id"]
+        component = param["component"]
+        object_value = param["object"]
+
+        # body
+        body = {
+            "tenant_id": tenant_id,
+            "object": object_value,
+        }
+
+        # target_endpoint
+        target_endpoint = None
+        if component == "dsm":
+            target_endpoint = "/services/trackme/v2/splk_smart_status/ds_smart_status"
+        elif component == "dhm":
+            target_endpoint = "/services/trackme/v2/splk_smart_status/dh_smart_status"
+        elif component == "mhm":
+            target_endpoint = "/services/trackme/v2/splk_smart_status/mh_smart_status"
+        elif component == "wlk":
+            target_endpoint = "/services/trackme/v2/splk_smart_status/wlk_smart_status"
+        elif component == "flx":
+            target_endpoint = "/services/trackme/v2/splk_smart_status/flx_smart_status"
+
+        # make rest call
+        ret_val, response = self._make_rest_call(
+            target_endpoint,
+            action_result,
+            method="post",
+            body=json.dumps(body),
+            params=None,
+            headers=None,
+        )
+
+        if phantom.is_fail(ret_val):
+            return action_result.get_status()
+
+        # Return success
+
+        # Add a dictionary that is made up of the most important values from data into the summary
+        summary = action_result.update_summary({})
+
+        # resp_data
+        # self.debug_print(f'response: {response}')
+        summary["trackme_response"] = json.dumps(response)
+
+        # add data
+        action_result.add_data(response)
+
+        self.save_progress("Machine Leaning Outliers monitor successful")
+        return action_result.set_status(phantom.APP_SUCCESS)
 
     def initialize(self):
         # Load the state in initialize, use it to store data

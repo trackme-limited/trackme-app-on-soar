@@ -1,0 +1,97 @@
+<h1>About TrackMe for Splunk Enterprise & Splunk Cloud</h1>
+TrackMe for Splunk provides visibility and operational excellence to monitor at scale your Splunk data sources availability & quality, scheduled Splunk workload and many more.
+<br /><br />
+For more information about TrackkMe for Splunk, refer to:
+<br />
+- <a target="_blank" href="https://trackme-solutions.com">https://trackme-solutions.com</a>
+<br />
+- <a target="_blank" href="https://docs.trackme-solutions.com">https://docs.trackme-solutions.com</a>
+
+<h1>Port Information</h1>
+This application uses HTTPS to communicate with TrackMe REST API endpoints exposed by Splunkd over HTTPS generally on the port 8089.</h2>
+
+<h1>Authentication to Splunkd API</h1>
+
+Authentication to Splunkd is performed through the usage of a Splunk bearer token, which is associated with a Splunk user and depending on capabilities and permissions for this user.
+<br /><br />
+For the configuration of the Splunk service account on the Splunk side, and its requirements in terms of capabilities, permissions and resources, consult:
+<br />
+- <a target="_blank" href="https://docs.trackme-solutions.com/latest/admin_guide_configuration.html#service-account-and-permissions">https://docs.trackme-solutions.com/latest/admin_guide_configuration.html#service-account-and-permissions</a>
+
+<h1>TrackMe REST API</h1>
+This application leverages the TrackMe REST API endpoints to interact with TrackMe backends, allowing to manage TrackMe entities and behaviours.
+<br /><br />
+For more information about TrackMe REST API, refer to:
+<br />
+- <a target="_blank" href="https://docs.trackme-solutions.com/latest/admin_guide_rest.html">https://docs.trackme-solutions.com/latest/admin_guide_rest.html</a>
+
+<h1>Additional information about SOAR Actions</h1>
+
+<h3>Action: component_manage_entity</h3>
+
+This actions allows to manage and modify TrackMe entities and their behaviours, the parameter <b>action</b> accepts different values and each action is associated with a set of options to be defined in a JSON format in the parameter <b>extra_attributes</b>.
+<br /><br />
+The following section details the different actions and their associated options.
+
+<h4>enable</h4>
+
+- This action does not require any extra attributes.
+
+<h4>disable</h4>
+
+- This action does not require any extra attributes.
+
+<h4>delete</h4>
+
+- This action supports the following extra attributes:
+<br /><br />
+<i>temporary entity deletion:</i>
+<br />
+<code>{"deletion_type": "temporary"}</code>
+
+<br /><br />
+
+<i>permanent entity deletion:</i>
+<br />
+<code>{"deletion_type": "permanent"}</code>
+
+<h4>manage_dsm_sampling</h4>
+
+- This action supports the following extra attributes:
+<br /><br />
+
+<i>enable DSM sampling:</i>
+<br />
+<code>{"action": "enable"}</code>
+
+<br /><br />
+
+<i>disable DSM sampling:</i>
+<br />
+<code>{"action": "disable"}</code>
+
+<br /><br />
+
+<i>reset</i>
+<br />
+<code>{"action": "reset"}</code>
+
+<br /><br />
+
+<i>run</i>
+<br />
+<code>{"action": "run"}</code>
+
+<br /><br />
+
+<i>update_no_records</i>
+<br />
+<code>{"action": "update_no_records", "data_sampling_nr": 100}</code>
+
+<h4>update_hours_ranges</h4>
+
+- This action supports the following extra attributes:
+
+<br /><br />
+
+<i>using a prefixed mode: all_ranges, manual:08h-to-20h</i>

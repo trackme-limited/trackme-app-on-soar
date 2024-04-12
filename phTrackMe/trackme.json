@@ -67,7 +67,7 @@
             "read_only": false,
             "parameters": {
                 "tenant_id": {
-                    "description": "The tenant identifier",
+                    "description": "Tenant identifier",
                     "data_type": "string",
                     "required": true,
                     "primary": false,
@@ -643,7 +643,7 @@
             "read_only": false,
             "parameters": {
                 "add_knowledge_record": {
-                    "description": "boolean value to indicate if a knowledge record should be added to the knowledge database, defaults to true",
+                    "description": "Boolean value to indicate if a knowledge record should be added to the knowledge database, defaults to true",
                     "data_type": "string",
                     "required": false,
                     "primary": false,
@@ -656,7 +656,7 @@
                     "param_name": "add_knowledge_record"
                 },
                 "maintenance_duration": {
-                    "description": "duration of the maintenance window in seconds, if unspecified and maintenance_mode_end is not specified either, defaults to now plus 24 hours",
+                    "description": "Duration of the maintenance window in seconds, if unspecified and maintenance_mode_end is not specified either, defaults to now plus 24 hours",
                     "data_type": "numeric",
                     "required": false,
                     "primary": false,
@@ -976,7 +976,7 @@
             "read_only": false,
             "parameters": {
                 "tenant_id": {
-                    "description": "The tenant identifier",
+                    "description": "Tenant identifier",
                     "data_type": "string",
                     "required": true,
                     "primary": false,
@@ -989,7 +989,7 @@
                     "param_name": "tenant_id"
                 },
                 "component": {
-                    "description": "The component value: dsm/dhm/wlk/flx/cim",
+                    "description": "TrackMe component, valid options are: flx, dsm, dhm, mhm, wlk, cim.",
                     "data_type": "string",
                     "required": true,
                     "primary": false,
@@ -1002,7 +1002,7 @@
                     "param_name": "component"
                 },
                 "object": {
-                    "description": "The entity object value",
+                    "description": "TrackMe entity name.",
                     "data_type": "string",
                     "required": true,
                     "primary": false,
@@ -1069,8 +1069,8 @@
             "versions": "EQ(*)"
         },
         {
-            "action": "mk_outliers_run_monitor",
-            "identifier": "mk_outliers_run_monitor",
+            "action": "ml_outliers_run_monitor",
+            "identifier": "ml_outliers_run_monitor",
             "description": "Runs Machine Learning Outliers monitor process for a given entity",
             "verbose": "This endpoint runs the execution of the ML monitor backend process, it requires a POST call with the following options:\n\n- component: (required) the component, valid options for this endpoint are: dsm|dhm|flx\n- object: (required) the object identifier for the entity to be executed\n- tenant_id: (required) tenant identifier",
             "type": "generic",
@@ -1090,7 +1090,7 @@
                     "param_name": "tenant_id"
                 },
                 "component": {
-                    "description": "The component value: dsm/dhm/wlk/flx/cim",
+                    "description": "TrackMe component, valid options are: flx, dsm, dhm, mhm, wlk, cim.",
                     "data_type": "string",
                     "required": true,
                     "primary": false,
@@ -1103,7 +1103,7 @@
                     "param_name": "component"
                 },
                 "object": {
-                    "description": "The object identifier for the entity to be executed",
+                    "description": "TrackMe entity name.",
                     "data_type": "string",
                     "required": true,
                     "primary": false,
@@ -1198,7 +1198,7 @@
                     "descriptionError": false
                 },
                 "component": {
-                    "description": "The component value: dsm/dhm/wlk/flx/cim",
+                    "description": "TrackMe component, valid options are: flx, dsm, dhm, mhm, wlk, cim.",
                     "data_type": "string",
                     "required": true,
                     "primary": false,
@@ -1212,7 +1212,7 @@
                     "descriptionError": false
                 },
                 "object": {
-                    "description": "The entity name",
+                    "description": "TrackMe entity name.",
                     "data_type": "string",
                     "required": true,
                     "primary": false,
@@ -1308,7 +1308,7 @@
                     "descriptionError": false
                 },
                 "component": {
-                    "description": "The component value: dsm/dhm/wlk/flx/cim",
+                    "description": "TrackMe component, valid options are: flx, dsm, dhm, mhm, wlk, cim.",
                     "data_type": "string",
                     "required": true,
                     "primary": false,
@@ -1322,7 +1322,7 @@
                     "descriptionError": false
                 },
                 "object": {
-                    "description": "The entity name",
+                    "description": "TrackMe entity name.",
                     "data_type": "string",
                     "required": true,
                     "primary": false,
@@ -1843,7 +1843,7 @@
                     "nameError": false
                 },
                 "component": {
-                    "description": "The component value: dsm/dhm/mhm/wlk/flx/cim",
+                    "description": "TrackMe component, valid options are: flx, dsm, dhm, mhm, wlk, cim",
                     "data_type": "string",
                     "required": true,
                     "primary": false,
@@ -1857,7 +1857,7 @@
                     "nameError": false
                 },
                 "filter_key": {
-                    "description": "Optional, filter on a given entity using its ID",
+                    "description": "Key identifier, multiple keys can be specified as a comma separated list of values. (you can use filter_object OR filter_key)",
                     "data_type": "string",
                     "required": false,
                     "primary": false,
@@ -1871,7 +1871,7 @@
                     "nameError": false
                 },
                 "filter_object": {
-                    "description": "Optional, filter on a given entity using its object value",
+                    "description": "Object identifier, multiple objects can be specified as a comma separated list of values. (you can use filter_object OR filter_key)",
                     "data_type": "string",
                     "required": false,
                     "primary": false,
@@ -2093,7 +2093,7 @@
                     "param_name": "tenant_id"
                 },
                 "component": {
-                    "description": "Component type",
+                    "description": "TrackMe component, valid options are: flx, dsm, dhm, mhm, wlk, cim",
                     "data_type": "string",
                     "required": true,
                     "primary": false,
@@ -2106,7 +2106,7 @@
                     "param_name": "component"
                 },
                 "filter_object": {
-                    "description": "Object identifier",
+                    "description": "Object identifier, multiple objects can be specified as a comma separated list of values. (you can use filter_object OR filter_key)",
                     "data_type": "string",
                     "required": false,
                     "primary": false,
@@ -2119,7 +2119,7 @@
                     "param_name": "filter_object"
                 },
                 "filter_key": {
-                    "description": "Keyid identifier",
+                    "description": "Keyid identifier, multiple keys can be specified as a comma separated list of values. (you can use filter_object OR filter_key)",
                     "data_type": "string",
                     "required": false,
                     "primary": false,
@@ -2132,7 +2132,7 @@
                     "param_name": "filter_key"
                 },
                 "action": {
-                    "description": "Action requested",
+                    "description": "The Action requested, valid options are: enable, disable, delete, manage_dsm_sampling, update_hours_ranges, update_wdays, update_priority, update_lag_policy, update_dcount_host, update_manual_tags",
                     "data_type": "string",
                     "required": true,
                     "primary": false,
@@ -2145,7 +2145,7 @@
                     "param_name": "action"
                 },
                 "extra_attributes": {
-                    "description": "Dependening on action a JSON like object containing the attributes and their values",
+                    "description": "A JSON object containing attributes for the action. For example, the action update_lag_policy could be asssociated with the following extra_attributes: {\"data_max_delay_allowed\": 7200, \"data_max_lag_allowed\": 900}",
                     "data_type": "string",
                     "required": false,
                     "primary": false,
@@ -2230,6 +2230,113 @@
                         "success",
                         "failed"
                     ]                    
+                },
+                {
+                    "data_path": "action_result.message",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "summary.total_objects",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "summary.total_objects_successful",
+                    "data_type": "numeric"
+                }
+            ],
+            "render": {
+                "type": "table"
+            },
+            "versions": "EQ(*)"
+        },
+        {
+            "action": "smart_status",
+            "identifier": "smart_status",
+            "description": "Runs the SmartStatus TrackMe action",
+            "verbose": "The SmartStatus TrackMe action performed automated investigations in Splunk depending on the current status of the entity, and returns the key information for the entity anomalies detected.",
+            "type": "generic",
+            "read_only": false,
+            "parameters": {
+                "tenant_id": {
+                    "description": "Tenant identifier",
+                    "data_type": "string",
+                    "required": true,
+                    "primary": false,
+                    "contains": [],
+                    "value_list": [],
+                    "default": "",
+                    "order": 0,
+                    "name": "tenant_id",
+                    "id": 1,
+                    "param_name": "tenant_id"
+                },
+                "component": {
+                    "description": "TrackMe component, valid options are: flx, dsm, dhm, mhm, wlk, cim.",
+                    "data_type": "string",
+                    "required": true,
+                    "primary": false,
+                    "contains": [],
+                    "value_list": [],
+                    "default": "",
+                    "order": 1,
+                    "name": "component",
+                    "id": 2,
+                    "param_name": "component"
+                },
+                "object": {
+                    "description": "TrackMe entity name.",
+                    "data_type": "string",
+                    "required": true,
+                    "primary": false,
+                    "contains": [],
+                    "value_list": [],
+                    "default": "",
+                    "order": 2,
+                    "name": "object",
+                    "id": 3,
+                    "param_name": "object"
+                }
+            },
+            "output": [
+                {
+                    "data_path": "action_result.parameter.tenant_id",
+                    "data_type": "string",
+                    "contains": [],
+                    "column_name": "tenant_id",
+                    "column_order": 0,
+                    "example_values": [
+                        "mytenant"
+                    ]
+                },
+                {
+                    "data_path": "action_result.parameter.component",
+                    "data_type": "string",
+                    "contains": [],
+                    "column_name": "component",
+                    "column_order": 1,
+                    "example_values": [
+                        "dsm"
+                    ]
+                },
+                {
+                    "data_path": "action_result.parameter.object",
+                    "data_type": "string",
+                    "contains": [],
+                    "column_name": "object",
+                    "column_order": 2,
+                    "example_values": [
+                        "org_eu_linux:linux_secure"
+                    ]
+                },
+                {
+                    "data_path": "action_result.status",
+                    "data_type": "string",
+                    "column_name": "status",
+                    "column_order": 3,
+                    "example_values": [
+                        "success",
+                        "failed"
+                    ]
                 },
                 {
                     "data_path": "action_result.message",
