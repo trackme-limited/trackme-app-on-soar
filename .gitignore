@@ -1,0 +1,13 @@
+#.gitignore
+
+# Mac OS X cached files
+.DS_Store
+
+# Visual Basic Code
+.vscode
+
+# Py compiled
+*.pyc
+
+# any *.tgz
+*.tgz

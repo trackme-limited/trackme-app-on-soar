@@ -1,7 +1,7 @@
 {
     "appid": "dce19fec-9c3e-4bec-914e-8230ac80a417",
     "name": "TrackMe",
-    "description": "The TrackMe App for SOAR provides native capabilities to interact with TrackMe for Splunk Enterprise & Splunk Cloud.",
+    "description": "This application provides powerful capabilities to interact with TrackMe for Splunk Enterprise & Splunk Cloud.",
     "type": "siem",
     "product_vendor": "TrackMe Limited",
     "logo": "trackme.png",
@@ -11,11 +11,11 @@
     "product_version_regex": ".*",
     "publisher": "TrackMe Limited",
     "license": "Copyright (c) TrackMe Limited, 2024",
-    "app_version": "2.5.0",
+    "app_version": "1.0.0",
     "utctime_updated": "2024-04-12T06:57:35.836924Z",
     "package_name": "phantom_trackme",
     "main_module": "trackme_connector.py",
-    "min_phantom_version": "6.2.1.305",
+    "min_phantom_version": "6.1.1",
     "app_wizard_version": "1.0.0",
     "configuration": {
         "splunk_url": {
@@ -2225,7 +2225,11 @@
                     "data_path": "action_result.status",
                     "data_type": "string",
                     "column_name": "status",
-                    "column_order": 7
+                    "column_order": 7,
+                    "example_values": [
+                        "success",
+                        "failed"
+                    ]                    
                 },
                 {
                     "data_path": "action_result.message",
