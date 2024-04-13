@@ -40,7 +40,7 @@
             "description": "Verify Splunk API SSL certificate",
             "data_type": "boolean",
             "required": true,
-            "default": "False",
+            "default": false,
             "order": 2,
             "name": "verify_ssl",
             "id": 2
@@ -499,8 +499,8 @@
         {
             "action": "maintenance_status",
             "identifier": "maintenance_status",
-            "description": "This action allows retrieving the current TrackMe maintenance mode status.",
-            "verbose": "Check and return the maintenance mode status",
+            "description": "Check and return the maintenance mode status",
+            "verbose": "This action allows retrieving the current TrackMe maintenance mode status.",
             "type": "generic",
             "read_only": false,
             "parameters": {},
@@ -638,7 +638,7 @@
             "action": "maintenance_enable",
             "identifier": "maintenance_enable",
             "description": "Enable global TrackMe maintenance mode",
-            "verbose": "This endpoint enables the maintenance mode, it requires a POST call with the following information:\n\n- add_knowledge_record: OPTIONAL: a boolean value to indicate if a knowledge record should be added to the knowledge database, defaults to true\n- maintenance_duration: (integer) OPTIONAL: the duration of the maintenance window in seconds, if unspecified and maintenance_mode_end is not specified either, defaults to now plus 24 hours\n- maintenance_mode_end: OPTIONAL: the date time in epochtime format for the end of the maintenance window, it is overriden by maintenance_duration if specified, defaults to now plus 24 hours if not specified and maintenance_duration is not specified\n- maintenance_mode_start: OPTIONAL: the date time in epochtime format for the start of the maintennce window, defaults to now if not specified\n- time_format: OPTIONAL: the time format when submitting start and end maintenance values, defaults to epochtime and can alternatively be set to datestring which expects YYYY-MM-DDTHH:MM as the input format\n - update_comment: OPTIONAL: a comment for the update, comments are added to the audit record, if unset will be defined to: API update",
+            "verbose": "This action enables the TrackMe global maintenance mode.",
             "type": "generic",
             "read_only": false,
             "parameters": {
@@ -855,7 +855,7 @@
             "action": "maintenance_disable",
             "identifier": "maintenance_disable",
             "description": "Disable global TrackMe maintenance mode",
-            "verbose": "This endpoint disables the maintenance mode, it requires a POST call with the following information:\n- update_comment: OPTIONAL: a comment for the update, comments are added to the audit record, if unset will be defined to: API update",
+            "verbose": "This action disable the TrackMe global maintenance mode.",
             "type": "generic",
             "read_only": false,
             "parameters": {
@@ -1146,7 +1146,7 @@
             "action": "ml_outliers_train_models",
             "identifier": "ml_outliers_train_models",
             "description": "Requests Machine Learning models training for a given entity",
-            "verbose": "Programmatically train ML models for a given entity, this endpoints is designed to be called by the backend for the purpose of training ML models:\n\n- component: (required) The component category\n- object: (required) entity name\n- tenant_id: (required) tenant identifier",
+            "verbose": "Programmatically train ML models for a given entity.",
             "type": "generic",
             "read_only": false,
             "parameters": {
@@ -1253,7 +1253,7 @@
             "action": "ml_outliers_run_monitor",
             "identifier": "ml_outliers_run_monitor",
             "description": "Runs Machine Learning Outliers monitor process for a given entity",
-            "verbose": "This endpoint runs the execution of the ML monitor backend process, it requires a POST call with the following options:\n\n- component: (required) the component, valid options for this endpoint are: dsm|dhm|flx\n- object: (required) the object identifier for the entity to be executed\n- tenant_id: (required) tenant identifier",
+            "verbose": "This actions runs TrackMe Learning Outliers monitor for a given entity.",
             "type": "generic",
             "read_only": false,
             "parameters": {
@@ -1360,7 +1360,7 @@
             "action": "ml_outliers_reset_models",
             "identifier": "ml_outliers_reset_models",
             "description": "Reset all ML outliers models for a given entity",
-            "verbose": "This endpoint resets ML models rules, it requires a POST call with the following options:\n\n- component: The component category\n- object: entity name\n- tenant_id: tenant identifier",
+            "verbose": "This actions resets ML models rules for a given entity.",
             "type": "generic",
             "read_only": false,
             "parameters": {
@@ -1470,7 +1470,7 @@
             "action": "ml_outliers_get_models",
             "identifier": "ml_outliers_get_models",
             "description": "Get ML Outliers models information for a given entity",
-            "verbose": "This action retrieves the key information for Machine Learning Outliers for a given entity:\n\n- component: The component category\n- object: entity name\n- tenant_id: tenant identifier",
+            "verbose": "This action retrieves the key information for Machine Learning Outliers for a given entity.",
             "type": "generic",
             "read_only": false,
             "parameters": {
@@ -1823,7 +1823,7 @@
             "action": "ml_outliers_add_period_exclusion",
             "identifier": "ml_outliers_add_period_exclusion",
             "description": "Add an exclusion period to a given ML model",
-            "verbose": "This endpoint adds a period of exclusion for a given ML model, it requires a POST call with the following options:\n\n- component: (required) The component category\n- earliest: (required) The earliest time to be excluded (for add), in epochtime or date string in the format %Y-%m-%dT%H:%M\n- latest: (required) The latest time to be excluded (for add), in epochtime or date string in the format %Y-%m-%dT%H:%M\n- model_id: (required) The model identifier\n- object: (required) entity name\n- period_exclusion_id: (required) The period exclusion identifier, can be provided as a comma separated list of values (for action delete)\n- tenant_id: (required) tenant identifier",
+            "verbose": "This action adds a period of exclusion for a given Machine Learning model.",
             "type": "generic",
             "read_only": false,
             "parameters": {
@@ -2005,7 +2005,7 @@
             "action": "component_get_entity",
             "identifier": "component_get_entity",
             "description": "Get TrackMe entities realtime data and status",
-            "verbose": "This action returns the realtime TrackMe knowledge for a given TrackMe entity, it requires:\n\n- component: (required) component identifier, valid options are: flx, dsm, dhm, mhm, flx, wlk, cim\n- filter_key: (optional) target a specific TrackMe key record, do not specify this for no filtering\n- object_key: (optional) target a specific TrackMe object record, do not specify this for no filtering\n- tenant_id: (required) tenant identifier",
+            "verbose": "This action returns the realtime TrackMe knowledge for a given TrackMe entity.",
             "type": "generic",
             "read_only": false,
             "parameters": {
@@ -2455,7 +2455,7 @@
             "action": "smart_status",
             "identifier": "smart_status",
             "description": "Runs the SmartStatus TrackMe action",
-            "verbose": "The SmartStatus TrackMe action performed automated investigations in Splunk depending on the current status of the entity, and returns the key information for the entity anomalies detected.",
+            "verbose": "The SmartStatus TrackMe action performs automated investigations in Splunk depending on the current status of the entity, and returns the key information for the entity anomalies detected.",
             "type": "generic",
             "read_only": false,
             "parameters": {
