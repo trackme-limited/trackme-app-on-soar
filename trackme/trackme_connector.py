@@ -1471,6 +1471,104 @@ class TrackmeConnector(BaseConnector):
         self.save_progress("Manage TrackMe entity successful")
         return action_result.set_status(phantom.APP_SUCCESS)
 
+    def _handle_logical_group_manage(self, param):
+        self.save_progress(
+            "In action handler for: {0}".format(self.get_action_identifier())
+        )
+
+        # Add an action result object to self (BaseConnector) to represent the action for this param
+        action_result = self.add_action_result(ActionResult(dict(param)))
+
+        # Access action parameters passed in the 'param' dictionary
+
+        # Required values can be accessed directly
+        tenant_id = param["tenant_id"]
+        action = param["action"]
+
+        # Optional values should use the .get() function
+        object_group_name = param.get("object_group_name", None)
+        object_list = param.get("object_list", None)
+        object_group_min_green_percent = param.get(
+            "object_group_min_green_percent", None
+        )
+        update_comment = param.get("update_comment", None)
+
+        # init body
+        body = {
+            "tenant_id": tenant_id,
+        }
+
+        if object_group_min_green_percent:
+            body["object_group_min_green_percent"] = object_group_min_green_percent
+
+        # add update_comment
+        if update_comment:
+            body["update_comment"] = update_comment
+
+        # handle action
+        allowed_actions = [
+            "show",
+            "associate",
+            "unassociate",
+        ]
+
+        if action not in allowed_actions:
+            raise Exception(
+                f"Invalid action={action}, valid actions are: {allowed_actions}"
+            )
+
+        # set endpoint
+        if action == "show":
+            target_endpoint = (
+                "/services/trackme/v2/splk_logical_groups/logical_groups_collection"
+            )
+        elif action in ("associate", "unassociate"):
+
+            if action == "associate":
+                body["action"] = action
+                body["object_group_name"] = object_group_name
+                body["object_list"] = object_list
+                if object_group_min_green_percent:
+                    body["object_group_min_green_percent"] = (
+                        object_group_min_green_percent
+                    )
+
+            elif action == "unassociate":
+                body["action"] = action
+                body["object_group_name"] = object_group_name
+                body["object_list"] = object_list
+
+            target_endpoint = "/services/trackme/v2/splk_logical_groups/write/logical_groups_associate_group"
+
+        # make rest call
+        ret_val, response = self._make_rest_call(
+            target_endpoint,
+            action_result,
+            method="post",
+            body=json.dumps(body),
+            params=None,
+            headers=None,
+        )
+
+        if phantom.is_fail(ret_val):
+            return action_result.get_status()
+
+        # Return success
+
+        # Add a dictionary that is made up of the most important values from data into the summary
+        summary = action_result.update_summary({})
+
+        # resp_data
+        # self.debug_print(f'response: {response}')
+        summary["trackme_response"] = json.dumps(response)
+
+        # add data
+        for item in response:
+            action_result.add_data(item)
+
+        self.save_progress("Manage TrackMe logical group successful")
+        return action_result.set_status(phantom.APP_SUCCESS)
+
     def _handle_smart_status(self, param):
 
         self.save_progress(
@@ -1581,6 +1679,9 @@ class TrackmeConnector(BaseConnector):
 
         if action_id == "component_manage_entity":
             ret_val = self._handle_component_manage_entity(param)
+
+        if action_id == "logical_group_manage":
+            ret_val = self._handle_logical_group_manage(param)
 
         if action_id == "smart_status":
             ret_val = self._handle_smart_status(param)

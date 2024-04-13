@@ -2557,7 +2557,164 @@
                 "type": "table"
             },
             "versions": "EQ(*)"
-        }
+        },
+        {
+            "action": "logical_group_manage",
+            "identifier": "logical_group_manage",
+            "description": "Manage TrackMe logical groups.",
+            "verbose": "This actions allows to manage TrackMe logical groups and perform association or unassociation of entities with Logical Groups.",
+            "type": "generic",
+            "read_only": false,
+            "parameters": {
+                "tenant_id": {
+                    "description": "Tenant identifier",
+                    "data_type": "string",
+                    "required": true,
+                    "primary": false,
+                    "contains": [],
+                    "value_list": [],
+                    "default": "",
+                    "order": 0,
+                    "name": "tenant_id",
+                    "id": 1,
+                    "param_name": "tenant_id"
+                },
+                "action": {
+                    "description": "The action to be performed on the logical group, valid options: show / associate / unassociate.",
+                    "data_type": "string",
+                    "required": true,
+                    "primary": false,
+                    "contains": [],
+                    "value_list": [],
+                    "default": "",
+                    "order": 1,
+                    "name": "action",
+                    "id": 2,
+                    "param_name": "action"
+                },
+                "object_group_name": {
+                    "description": "Logical Group name, required for action associate / unassociate, if performing association the logical group will be created if it does not exist yet.",
+                    "data_type": "string",
+                    "required": false,
+                    "primary": false,
+                    "contains": [],
+                    "value_list": [],
+                    "default": "",
+                    "order": 2,
+                    "name": "object_group_name",
+                    "id": 3,
+                    "param_name": "object_group_name"
+                },
+                "object_list": {
+                    "description": "Required for associate / unassociate, comma separated list of entities to be associated or unassociated with the Logical Group.",
+                    "data_type": "string",
+                    "required": false,
+                    "primary": false,
+                    "contains": [],
+                    "value_list": [],
+                    "default": "",
+                    "order": 3,
+                    "name": "object_list",
+                    "id": 4,
+                    "param_name": "object_list"
+                },
+                "object_group_min_green_percent": {
+                    "description": "For action: associate only, minimal green percentage for this group (for action: associate), if not specified, defaults to 50.",
+                    "data_type": "numeric",
+                    "required": false,
+                    "primary": false,
+                    "contains": [],
+                    "value_list": [],
+                    "default": "",
+                    "order": 4,
+                    "name": "object_group_min_green_percent",
+                    "id": 5,
+                    "param_name": "object_group_min_green_percent"
+                },
+                "update_comment": {
+                    "description": "A comment for the update, comments are added to the audit record, if unset will be defined to: API update",
+                    "data_type": "string",
+                    "required": false,
+                    "primary": false,
+                    "contains": [],
+                    "value_list": [],
+                    "default": "",
+                    "order": 5,
+                    "name": "update_comment",
+                    "id": 6,
+                    "param_name": "update_comment",
+                    "nameError": false
+                }                
+            },
+            "output": [
+                {
+                    "data_path": "action_result.parameter.tenant_id",
+                    "data_type": "string",
+                    "contains": [],
+                    "column_name": "tenant_id",
+                    "column_order": 0,
+                    "example_values": [
+                        "mytenant"
+                    ]
+                },
+                {
+                    "data_path": "action_result.parameter.action",
+                    "data_type": "string",
+                    "contains": [],
+                    "column_name": "action",
+                    "column_order": 1,
+                    "example_values": [
+                        "associate"
+                    ]
+                },
+                {
+                    "data_path": "action_result.parameter.object_group_name",
+                    "data_type": "string",
+                    "contains": [],
+                    "column_name": "object_group_name",
+                    "column_order": 1,
+                    "example_values": [
+                        "grp-linux-eu-appxxx"
+                    ]
+                },                
+                {
+                    "data_path": "action_result.parameter.object_list",
+                    "data_type": "string",
+                    "contains": [],
+                    "column_name": "object_list",
+                    "column_order": 2,
+                    "example_values": [
+                        "linux-srv-eu1,linux-srv-eu2"
+                    ]
+                },
+                {
+                    "data_path": "action_result.status",
+                    "data_type": "string",
+                    "column_name": "status",
+                    "column_order": 3,
+                    "example_values": [
+                        "success",
+                        "failed"
+                    ]
+                },
+                {
+                    "data_path": "action_result.message",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "summary.total_objects",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "summary.total_objects_successful",
+                    "data_type": "numeric"
+                }
+            ],
+            "render": {
+                "type": "table"
+            },
+            "versions": "EQ(*)"
+        }        
     ],
     "custom_made": true,
     "directory": "trackme_dce19fec-9c3e-4bec-914e-8230ac80a417",
