@@ -15,7 +15,7 @@
     "utctime_updated": "2024-04-12T06:57:35.836924Z",
     "package_name": "phantom_trackme",
     "main_module": "trackme_connector.py",
-    "min_phantom_version": "6.1.1",
+    "min_phantom_version": "6.0.2",
     "app_wizard_version": "1.0.0",
     "configuration": {
         "splunk_url": {
