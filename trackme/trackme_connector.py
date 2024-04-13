@@ -1318,6 +1318,26 @@ class TrackmeConnector(BaseConnector):
                     )
                 body["future_tolerance"] = future_tolerance
 
+            # from extra_attributes, extract and check splk_dhm_alerting_policy
+            splk_dhm_alerting_policy = extra_attributes.get(
+                "splk_dhm_alerting_policy", None
+            )
+            if splk_dhm_alerting_policy:
+                if component != "dhm":
+                    raise Exception(
+                        f"splk_dhm_alerting_policy is only valid for dhm component, but got: {component}"
+                    )
+
+                if splk_dhm_alerting_policy not in (
+                    "all_kpis",
+                    "lag_ingestion_kpi",
+                    "lag_event_kpi",
+                ):
+                    raise Exception(
+                        f"splk_dhm_alerting_policy must be all_kpis, lag_ingestion_kpi, or lag_event_kpi, but got: {splk_dhm_alerting_policy}"
+                    )
+                body["splk_dhm_alerting_policy"] = splk_dhm_alerting_policy
+
             # set endpoint
             if component == "dsm":
                 target_endpoint = (

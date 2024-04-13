@@ -30,20 +30,22 @@ For more information about TrackMe REST API, refer to:
 <h3>Action: component_manage_entity</h3>
 
 This actions allows to manage and modify TrackMe entities and their behaviours, the parameter <b>action</b> accepts different values and each action is associated with a set of options to be defined in a JSON format in the parameter <b>extra_attributes</b>.
+<br />
+Some actions are valid for all components, while some others are valid for specific components only.
 <br /><br />
 The following section details the different actions and their associated options.
 
-<h4>enable</h4>
+<h4>*** enable (all components) ***</h4>
 
-- This action does not require any extra attributes.
+This action does not require any extra attributes.
 
-<h4>disable</h4>
+<h4>*** disable (all components) ***</h4>
 
-- This action does not require any extra attributes.
+This action does not require any extra attributes.
 
-<h4>delete</h4>
+<h4>***delete (all components) ***</h4>
 
-- This action supports the following extra attributes:
+This action supports the following extra attributes:
 <br /><br />
 <i>temporary entity deletion:</i>
 <br />
@@ -55,9 +57,9 @@ The following section details the different actions and their associated options
 <br />
 <code>{"deletion_type": "permanent"}</code>
 
-<h4>manage_dsm_sampling</h4>
+<h4>*** manage_dsm_sampling (dsm only) ***</h4>
 
-- This action supports the following extra attributes:
+This action supports the following extra attributes:
 <br /><br />
 
 <i>enable DSM sampling:</i>
@@ -88,10 +90,87 @@ The following section details the different actions and their associated options
 <br />
 <code>{"action": "update_no_records", "data_sampling_nr": 100}</code>
 
-<h4>update_hours_ranges</h4>
+<h4>*** update_hours_ranges (dsm/dhm/flx/cim) ***</h4>
 
-- This action supports the following extra attributes:
+This action supports the following extra attributes:
 
 <br /><br />
 
 <i>using a prefixed mode: all_ranges, manual:08h-to-20h</i>
+<br />
+<code>{"hours_ranges": "all_ranges"}</code>
+
+<br /><br />
+
+<i>using a list of hours ranges, where 0 means midnight:</i>
+<br />
+<code>{"hours_ranges": [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]}</code>
+
+<h4>*** update_wdays (dsm/dhm/flx/cim) ***</h4>
+
+This action supports the following extra attributes:
+
+<br /><br />
+
+<i>using a prefixed mode: all_days, manual:monday-to-friday, manual:monday-to-saturday</i>
+<br />
+<code>{"wdays": "all_days"}</code>
+
+<br /><br />
+
+<i>using a list of week days ranges, where 0 means Sunday:</i>
+<br />
+<code>{"wdays": [1, 2, 3, 4, 5]}</code>
+
+<h4>*** update_priority (all components) ***</h4>
+
+This action supports the following extra attributes:
+
+<br /><br />
+
+<i>Update the entity priority: low, medium, high</i>
+<br />
+<code>{"priority": "high"}</code>
+
+<h4>*** update_lag_policy (dsm/dhm) ***</h4>
+
+This action supports the various extra attributes, all are optionals but one of them must be defined:
+
+<br /><br />
+    - allow_adaptive_delay: true/false<br />
+    - data_lag_alert_kpis: all_kpis/lag_ingestion_kpi/lag_event_kpi<br />
+    - data_max_delay_allowed: integer (value in seconds)<br />
+    - data_max_lag_allowed: integer (value in seconds)<br />
+    - data_override_lagging_class: true/false<br />
+    - future_tolerance: integer (negative value in seconds)<br />
+    - splk_dhm_alerting_policy: (dhm only) The policy, valid options are: global_policy / track_per_sourcetype / track_per_host<br />
+
+<br />
+<i>Example:</i>
+<br />
+<code>{"allow_adaptive_delay": true, "data_lag_alert_kpis": "all_kpis", "data_max_delay_allowed": 7200, "data_max_lag_allowed": 900, "data_override_lagging_class": true, "future_tolerance": -900}</code>
+
+<h4>*** update_dcount_host (dsm only) ***</h4>
+
+This action supports the following extra attributes:
+
+<br /><br />
+
+    - min_dcount_host: integer (minimum value) or the keyword: "any"<br />
+    - min_dcount_field: avg_dcount_host_5m / latest_dcount_host_5m / perc95_dcount_host_5m / stdev_dcount_host_5m / global_dcount_host<br />
+
+<br />
+<i>Example:</i>
+<br />
+<code>{"min_dcount_host": 10, "min_dcount_field": "avg_dcount_host_5m"}</code>
+
+<h4>*** update_manual_tags (dsm only) ***</h4>
+
+This action supports the following extra attributes:
+
+<br /><br />
+    - tags_manual: list of manual tags<br />
+<br />
+<i>Example:</i>
+<br />
+<code>{"tags_manual": ["tag1", "tag2"]}</code>
