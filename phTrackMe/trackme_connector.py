@@ -497,6 +497,52 @@ class TrackmeConnector(BaseConnector):
         self.save_progress("Maintenance mode disable successful")
         return action_result.set_status(phantom.APP_SUCCESS)
 
+    def _handle_tenants_ops_status(self, param):
+        self.save_progress(
+            "In action handler for: {0}".format(self.get_action_identifier())
+        )
+
+        # Add an action result object to self (BaseConnector) to represent the action for this param
+        action_result = self.add_action_result(ActionResult(dict(param)))
+
+        # Parameters
+        tenant_id = param.get("tenant_id", None)
+
+        # body
+        body = {}
+
+        if tenant_id:
+            body["tenant_id"] = tenant_id
+
+        # make rest call
+        ret_val, response = self._make_rest_call(
+            "/services/trackme/v2/configuration/get_tenant_ops_status",
+            action_result,
+            method="post",
+            body=body,
+            params=None,
+            headers=None,
+        )
+
+        if phantom.is_fail(ret_val):
+            return action_result.get_status()
+
+        # Return success
+
+        # Add a dictionary that is made up of the most important values from data into the summary
+        summary = action_result.update_summary({})
+
+        # resp_data
+        # self.debug_print(f'response: {response}')
+        summary["trackme_response"] = json.dumps(response)
+
+        # add data (response is a list)
+        for item in response:
+            action_result.add_data(item)
+
+        self.save_progress("Get TrackMe Tenants Ops status successful")
+        return action_result.set_status(phantom.APP_SUCCESS)
+
     def _handle_ml_outliers_train_models(self, param):
         self.save_progress(
             "In action handler for: {0}".format(self.get_action_identifier())
@@ -1329,58 +1375,6 @@ class TrackmeConnector(BaseConnector):
         self.save_progress("Manage TrackMe entity successful")
         return action_result.set_status(phantom.APP_SUCCESS)
 
-    def handle_action(self, param):
-        ret_val = phantom.APP_SUCCESS
-
-        # Get the action that we are supposed to execute for this App Run
-        action_id = self.get_action_identifier()
-
-        self.debug_print("action_id", self.get_action_identifier())
-
-        if action_id == "ack_get":
-            ret_val = self._handle_ack_get(param)
-
-        if action_id == "ack_manage":
-            ret_val = self._handle_ack_manage(param)
-
-        if action_id == "maintenance_status":
-            ret_val = self._handle_maintenance_status(param)
-
-        if action_id == "maintenance_enable":
-            ret_val = self._handle_maintenance_enable(param)
-
-        if action_id == "maintenance_disable":
-            ret_val = self._handle_maintenance_disable(param)
-
-        if action_id == "ml_outliers_train_models":
-            ret_val = self._handle_ml_outliers_train_models(param)
-
-        if action_id == "ml_outliers_run_monitor":
-            ret_val = self._handle_ml_outliers_run_monitor(param)
-
-        if action_id == "ml_outliers_reset_models":
-            ret_val = self._handle_ml_outliers_reset_models(param)
-
-        if action_id == "ml_outliers_get_models":
-            ret_val = self._handle_ml_outliers_get_models(param)
-
-        if action_id == "ml_outliers_add_period_exclusion":
-            ret_val = self._handle_ml_outliers_add_period_exclusion(param)
-
-        if action_id == "component_get_entity":
-            ret_val = self._handle_component_get_entity(param)
-
-        if action_id == "component_manage_entity":
-            ret_val = self._handle_component_manage_entity(param)
-
-        if action_id == "smart_status":
-            ret_val = self._handle_smart_status(param)
-
-        if action_id == "test_connectivity":
-            ret_val = self._handle_test_connectivity(param)
-
-        return ret_val
-
     def _handle_smart_status(self, param):
 
         self.save_progress(
@@ -1439,8 +1433,63 @@ class TrackmeConnector(BaseConnector):
         # add data
         action_result.add_data(response)
 
-        self.save_progress("Machine Leaning Outliers monitor successful")
+        self.save_progress("SmartStatus run successful")
         return action_result.set_status(phantom.APP_SUCCESS)
+
+    def handle_action(self, param):
+        ret_val = phantom.APP_SUCCESS
+
+        # Get the action that we are supposed to execute for this App Run
+        action_id = self.get_action_identifier()
+
+        self.debug_print("action_id", self.get_action_identifier())
+
+        if action_id == "ack_get":
+            ret_val = self._handle_ack_get(param)
+
+        if action_id == "ack_manage":
+            ret_val = self._handle_ack_manage(param)
+
+        if action_id == "maintenance_status":
+            ret_val = self._handle_maintenance_status(param)
+
+        if action_id == "maintenance_enable":
+            ret_val = self._handle_maintenance_enable(param)
+
+        if action_id == "maintenance_disable":
+            ret_val = self._handle_maintenance_disable(param)
+
+        if action_id == "tenants_ops_status":
+            ret_val = self._handle_tenants_ops_status(param)
+
+        if action_id == "ml_outliers_train_models":
+            ret_val = self._handle_ml_outliers_train_models(param)
+
+        if action_id == "ml_outliers_run_monitor":
+            ret_val = self._handle_ml_outliers_run_monitor(param)
+
+        if action_id == "ml_outliers_reset_models":
+            ret_val = self._handle_ml_outliers_reset_models(param)
+
+        if action_id == "ml_outliers_get_models":
+            ret_val = self._handle_ml_outliers_get_models(param)
+
+        if action_id == "ml_outliers_add_period_exclusion":
+            ret_val = self._handle_ml_outliers_add_period_exclusion(param)
+
+        if action_id == "component_get_entity":
+            ret_val = self._handle_component_get_entity(param)
+
+        if action_id == "component_manage_entity":
+            ret_val = self._handle_component_manage_entity(param)
+
+        if action_id == "smart_status":
+            ret_val = self._handle_smart_status(param)
+
+        if action_id == "test_connectivity":
+            ret_val = self._handle_test_connectivity(param)
+
+        return ret_val
 
     def initialize(self):
         # Load the state in initialize, use it to store data

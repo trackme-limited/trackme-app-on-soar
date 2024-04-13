@@ -968,6 +968,94 @@
             "versions": "EQ(*)"
         },
         {
+            "action": "tenants_ops_status",
+            "identifier": "tenants_ops_status",
+            "description": "Get TrackMe Tenants operation status",
+            "verbose": "This action retrieves the current operational status of the TrackMe tenants",
+            "type": "generic",
+            "read_only": false,
+            "parameters": {
+                "tenant_id": {
+                    "description": "Tenant identifier, do not specify a tenant identifier to retrieve the status of all tenants.",
+                    "data_type": "string",
+                    "required": false,
+                    "primary": false,
+                    "contains": [],
+                    "value_list": [],
+                    "default": "",
+                    "order": 0,
+                    "name": "tenant_id",
+                    "id": 1,
+                    "param_name": "tenant_id"
+                }
+            },
+            "output": [
+                {
+                    "data_path": "action_result.data.*.tenant_id",
+                    "data_type": "string",
+                    "column_name": "tenant_id",
+                    "column_order": 0,
+                    "example_values": [
+                        "mytenant"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.status",
+                    "data_type": "string",
+                    "column_name": "tenant_status",
+                    "column_order": 1,
+                    "example_values": [
+                        "OPERATIONAL",
+                        "DEGRADED"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.overall_ops_pct",
+                    "data_type": "string",
+                    "column_name": "overall_ops_pct",
+                    "column_order": 2,
+                    "example_values": [
+                        100
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.job_component_register",
+                    "data_type": "string",
+                    "column_name": "job_component_register",
+                    "column_order": 3,
+                    "example_values": [
+                        "JSON object with jobs operation details"
+                    ]
+                },
+                {
+                    "data_path": "action_result.status",
+                    "data_type": "string",
+                    "column_name": "status",
+                    "column_order": 4,
+                    "example_values": [
+                        "success",
+                        "failed"
+                    ]
+                },
+                {
+                    "data_path": "action_result.message",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "summary.total_objects",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "summary.total_objects_successful",
+                    "data_type": "numeric"
+                }
+            ],
+            "render": {
+                "type": "table"
+            },
+            "versions": "EQ(*)"
+        },
+        {
             "action": "ml_outliers_train_models",
             "identifier": "ml_outliers_train_models",
             "description": "Requests Machine Learning models training for a given entity",
