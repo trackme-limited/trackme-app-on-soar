@@ -291,10 +291,12 @@ class TrackmeConnector(BaseConnector):
         object_category = param["object_category"]
         object_list = param["object_list"]
         action = param["action"]
-        ack_comment = param["ack_comment"]
-        ack_period = param["ack_period"]
-        ack_type = param["ack_type"]
-        update_comment = param["update_comment"]
+
+        # Optional parameters
+        ack_comment = param.get("ack_comment", None)
+        ack_period = param.get("ack_period", None)
+        ack_type = param.get("ack_type", None)
+        update_comment = param.get("update_comment", None)
 
         # body
         body = {
