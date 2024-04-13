@@ -543,6 +543,82 @@ class TrackmeConnector(BaseConnector):
         self.save_progress("Get TrackMe Tenants Ops status successful")
         return action_result.set_status(phantom.APP_SUCCESS)
 
+    def _handle_remote_accounts_check_connectivity(self, param):
+        self.save_progress(
+            "In action handler for: {0}".format(self.get_action_identifier())
+        )
+
+        # Add an action result object to self (BaseConnector) to represent the action for this param
+        action_result = self.add_action_result(ActionResult(dict(param)))
+
+        # Parameters
+        account = param.get("account", None)
+
+        # body
+        body = {}
+
+        # If account is not a parameter, retrieve existing accounts
+        remote_accounts_list = []
+        if not account:
+            ret_val, response = self._make_rest_call(
+                "/services/trackme/v2/configuration/list_accounts",
+                action_result,
+                method="get",
+                body=None,
+                params=None,
+                headers=None,
+            )
+
+            if phantom.is_fail(ret_val):
+                return action_result.get_status()
+
+            # self.debug_print(f"list accounts response: {response}")
+
+            remote_accounts = response.get("accounts", [])
+            for remote_account in remote_accounts:
+                if remote_account != "local":
+                    remote_accounts_list.append(remote_account)
+
+        else:
+            remote_accounts_list.append(account)
+
+        # raise an exception is accounts is empty
+        if not len(remote_accounts_list) > 0:
+            raise Exception(
+                "No remote accounts configured were found on this TrackMe instance."
+            )
+
+        # Iterate over the accounts and check connectivity
+        for remote_account in remote_accounts_list:
+            body["account"] = remote_account
+            ret_val, response = self._make_rest_call(
+                "/services/trackme/v2/configuration/test_remote_account",
+                action_result,
+                method="post",
+                body=json.dumps(body),
+                params=None,
+                headers=None,
+            )
+
+            if phantom.is_fail(ret_val):
+                return action_result.get_status()
+
+            # add data
+            action_result.add_data(
+                {
+                    "account": account,
+                    "host": response.get("host"),
+                    "message": response.get("message"),
+                    "status": response.get("status"),
+                    "port": response.get("port"),
+                }
+            )
+
+        # Return success
+
+        self.save_progress("Check remote account connectivity successful")
+        return action_result.set_status(phantom.APP_SUCCESS)
+
     def _handle_ml_outliers_train_models(self, param):
         self.save_progress(
             "In action handler for: {0}".format(self.get_action_identifier())
@@ -1461,6 +1537,9 @@ class TrackmeConnector(BaseConnector):
 
         if action_id == "tenants_ops_status":
             ret_val = self._handle_tenants_ops_status(param)
+
+        if action_id == "remote_accounts_check_connectivity":
+            ret_val = self._handle_remote_accounts_check_connectivity(param)
 
         if action_id == "ml_outliers_train_models":
             ret_val = self._handle_ml_outliers_train_models(param)
