@@ -2,8 +2,8 @@ name: Start Release
 on:
   workflow_dispatch:
   push:
-    tags:
-      - "*-beta*"
+    branches-ignore:
+      - qua
 jobs:
   start-release:
     runs-on: ubuntu-latest
