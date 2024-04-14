@@ -56,8 +56,8 @@ jobs:
       - name: Get release notes
         run: |
           release_notes=$(cat release_notes/${{ env.version }}.md)
-          checksum_line="SHA256: ${sha256}\n\n"
-          formatted_release_notes="${checksum_line}${release_notes}"
+          checksum_line="SHA256: ${sha256}"
+          formatted_release_notes="${checksum_line}\n\n${release_notes}"
           echo "release_notes<<EOF" >> $GITHUB_ENV
           echo "${formatted_release_notes}" >> $GITHUB_ENV
           echo "EOF" >> $GITHUB_ENV
@@ -88,20 +88,6 @@ jobs:
       # Upload release to the release site
       #
 
-      - name: Create target directory for on release site
-        # main branch only
-        if: ${{ !contains(github.event.head_commit.message, '#nopublish') && github.ref == 'refs/heads/main' }}
-        uses: appleboy/ssh-action@v0.1.7
-        env:
-          VERSION_NUMBER: ${{ env.version_id }}
-        with:
-          host: ${{ secrets.RELEASE_SITE_HOST }}
-          username: ${{ secrets.RELEASE_SITE_USER }}
-          key: ${{ secrets.RELEASE_SITE_SSH_KEY }}
-          port: ${{ secrets.RELEASE_SITE_SSH_PORT }}
-          script: |
-            mkdir "/var/www/trackme-solutions.com/downloads/trackme-app-on-soar/trackme_${VERSION_NUMBER}"
-
       - name: Upload to release site
         # main branch only
         if: ${{ !contains(github.event.head_commit.message, '#nopublish') && github.ref == 'refs/heads/main' }}
@@ -113,6 +99,6 @@ jobs:
           username: ${{ secrets.RELEASE_SITE_USER }}
           key: ${{ secrets.RELEASE_SITE_SSH_KEY }}
           port: ${{ secrets.RELEASE_SITE_SSH_PORT }}
-          source: "./trackme_${{ env.version_id }}.tgz,README.md,release_notes/${{ env.version }}.md,release-sha256.txt"
+          source: "./trackme_${{ env.version_id }}.tgz,./README.md,release_notes/${{ env.version }}.md,./release-sha256.txt"
           target: "/var/www/trackme-solutions.com/downloads/trackme-app-on-soar/trackme_${{ env.version_id }}"
           strip_components: 1
