@@ -45,6 +45,7 @@ jobs:
           echo "EOF" >> $GITHUB_ENV
 
       - name: Create Release
+        id: create_release # This ID is used to reference outputs from this step
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.SOAR_APPS_TOKEN }}
@@ -60,7 +61,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.SOAR_APPS_TOKEN }}
         with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          upload_url: ${{ steps.create_release.outputs.upload_url }} # Using the output from the create_release step
           asset_path: ./trackme_${{ env.version_id }}.tgz
           asset_name: trackme_${{ env.version_id }}.tgz
           asset_content_type: application/gzip
