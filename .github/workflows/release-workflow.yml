@@ -72,7 +72,7 @@ jobs:
           draft: false
           prerelease: false
 
-      - name: Upload Release Asset
+      - name: Upload Release Asset (TGZ file)
         uses: actions/upload-release-asset@v1 # Check if there's an updated version
         env:
           GITHUB_TOKEN: ${{ secrets.SOAR_APPS_TOKEN }}
@@ -81,6 +81,26 @@ jobs:
           asset_path: ./trackme_${{ env.version_id }}.tgz
           asset_name: trackme_${{ env.version_id }}.tgz
           asset_content_type: application/gzip
+
+      - name: Upload SHA256 checksum file
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.SOAR_APPS_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./release-sha256.txt
+          asset_name: release-sha256.txt
+          asset_content_type: text/plain
+
+      - name: Upload Release Notes Markdown
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.SOAR_APPS_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./release_notes/${{ env.version }}.md
+          asset_name: release-${{ env.version }}.md
+          asset_content_type: text/markdown
 
       #
       # Upload release to the release site
