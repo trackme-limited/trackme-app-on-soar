@@ -24,8 +24,8 @@ jobs:
         id: version
         run: |
           echo "Reading version information..."
-          version_full=$(python -c "import json; with open('trackme.json', 'r') as file: data = json.load(file); print(data['app_version'])")
-          version_id=$(python -c "import json; with open('trackme.json', 'r') as file: data = json.load(file); version = data['app_version'].replace('.', ''); print(version)")
+          version_full=$(python -c "import json; file = open('trackme.json'); data = json.load(file); file.close(); print(data['app_version'])")
+          version_id=$(python -c "import json; file = open('trackme.json'); data = json.load(file); file.close(); print(data['app_version'].replace('.', ''))")
           echo "version=${version_full}" >> $GITHUB_ENV
           echo "version_id=${version_id}" >> $GITHUB_ENV
 
