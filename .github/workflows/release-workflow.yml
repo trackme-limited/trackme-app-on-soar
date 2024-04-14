@@ -23,10 +23,11 @@ jobs:
       - name: Extract version from trackme.json
         id: version
         run: |
-          version=$(python -c "import json; with open('trackme.json', 'r') as file: data = json.load(file); version = data['app_version'].replace('.', ''); print(data['app_version'])")
+          echo "Reading version information..."
+          version_full=$(python -c "import json; with open('trackme.json', 'r') as file: data = json.load(file); print(data['app_version'])")
           version_id=$(python -c "import json; with open('trackme.json', 'r') as file: data = json.load(file); version = data['app_version'].replace('.', ''); print(version)")
-          echo "version=$version" >> $GITHUB_ENV
-          echo "version_id=$version_id" >> $GITHUB_ENV
+          echo "version=${version_full}" >> $GITHUB_ENV
+          echo "version_id=${version_id}" >> $GITHUB_ENV
 
       - name: Compress files
         run: |
