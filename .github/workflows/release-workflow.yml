@@ -55,14 +55,11 @@ jobs:
 
       - name: Get release notes
         run: |
-          # Create the release notes with checksum in a temporary file
-          echo "SHA256: ${sha256}" > formatted_release_notes.md
-          echo >> formatted_release_notes.md
-          cat release_notes/${{ env.version }}.md >> formatted_release_notes.md
-
-          # Read from the temporary file and set the environment variable
+          release_notes=$(cat release_notes/${{ env.version }}.md)
+          checksum_line="SHA256: ${sha256}"
+          formatted_release_notes="${checksum_line}\n\n${release_notes}"
           echo "release_notes<<EOF" >> $GITHUB_ENV
-          cat formatted_release_notes.md >> $GITHUB_ENV
+          echo "${formatted_release_notes}" >> $GITHUB_ENV
           echo "EOF" >> $GITHUB_ENV
 
       - name: Create Release
