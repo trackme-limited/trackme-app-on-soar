@@ -23,14 +23,14 @@ jobs:
       - name: Extract version from trackme.json
         id: version
         run: |
-          python -c "import json; file = open('trackme.json', 'r'); data = json.load(file); file.close(); version = data['app_version'].replace('.', ''); print(f\"::set-output name=version::{data['app_version']}\"); print(f\"::set-output name=version_id::{version}\")"
+          python -c "import json; file = open('trackme.json', 'r'); data = json.load(file); file.close(); version = data['app_version'].replace('.', ''); print(f\"version={data['app_version']}\" >> $GITHUB_ENV); print(f\"version_id={version}\" >> $GITHUB_ENV)"
 
       - name: Compress files
         run: |
           tar --exclude='./.git' \
             --exclude='./.github' \
             --exclude='./.gitignore' \
-            -czvf trackme_${{ steps.version.outputs.version_id }}.tgz .
+            -czvf trackme_${{ steps.version.outputs.version_id }}.tgz *
 
       - name: Get release notes
         id: release_notes
