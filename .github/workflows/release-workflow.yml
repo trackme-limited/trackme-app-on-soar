@@ -1,0 +1,68 @@
+name: Release Workflow
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  create_release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.x"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pyyaml
+
+      - name: Extract version from trackme.json
+        id: version
+        run: |
+          import yaml
+          with open('trackme.json', 'r') as file:
+            data = yaml.safe_load(file)
+          version = data['app_version'].replace('.', '')
+          print(f"::set-output name=version::{data['app_version']}")
+          print(f"::set-output name=version_id::{version}")
+
+      - name: Compress files
+        run: |
+          tar --exclude='./.git' \
+            --exclude='./.github' \
+            --exclude='./.gitignore' \
+            -czvf trackme_${{ steps.version.outputs.version_id }}.tgz .
+
+      - name: Get release notes
+        id: release_notes
+        run: |
+          with open(f'release_notes/${{ steps.version.outputs.version }}.md', 'r') as file:
+            release_notes = file.read()
+          print(f"::set-output name=release_notes::{release_notes}")
+
+      - name: Create Release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.SOAR_APPS_TOKEN }}
+        with:
+          tag_name: ${{ steps.version.outputs.version }}
+          release_name: Version ${{ steps.version.outputs.version }}
+          body: ${{ steps.release_notes.outputs.release_notes }}
+          draft: false
+          prerelease: false
+
+      - name: Upload Release Asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.SOAR_APPS_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./trackme_${{ steps.version.outputs.version_id }}.tgz
+          asset_name: trackme_${{ steps.version.outputs.version_id }}.tgz
+          asset_content_type: application/gzip
