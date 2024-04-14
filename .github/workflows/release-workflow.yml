@@ -18,16 +18,14 @@ jobs:
           python-version: "3.x"
 
       - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install pyyaml
+        run: python -m pip install --upgrade pip
 
       - name: Extract version from trackme.json
         id: version
         run: |
-          import yaml
+          import json
           with open('trackme.json', 'r') as file:
-            data = yaml.safe_load(file)
+            data = json.load(file)
           version = data['app_version'].replace('.', '')
           print(f"::set-output name=version::{data['app_version']}")
           print(f"::set-output name=version_id::{version}")
