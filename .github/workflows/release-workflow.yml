@@ -58,9 +58,6 @@ jobs:
           release_notes=$(cat release_notes/${{ env.version }}.md)
           echo "SHA256: ${sha256}" >> $GITHUB_ENV
           echo "${release_notes}" >> $GITHUB_ENV
-          echo "release_notes<<EOF" >> $GITHUB_ENV
-          echo "${formatted_release_notes}" >> $GITHUB_ENV
-          echo "EOF" >> $GITHUB_ENV
 
       - name: Create Release
         id: create_release
