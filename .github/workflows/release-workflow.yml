@@ -57,9 +57,13 @@ jobs:
         run: |
           release_notes=$(cat release_notes/${{ env.version }}.md)
           checksum_line="SHA256: ${sha256}"
-          formatted_release_notes="${checksum_line}\n\n${release_notes}"
+          # Use a delimiter to start the multiline string
           echo "release_notes<<EOF" >> $GITHUB_ENV
-          echo "${formatted_release_notes}" >> $GITHUB_ENV
+          # Insert the formatted release notes including the checksum
+          echo "$checksum_line" >> $GITHUB_ENV
+          echo "" >> $GITHUB_ENV  # Ensures two new lines
+          cat release_notes/${{ env.version }}.md >> $GITHUB_ENV
+          # End the multiline string with the same delimiter
           echo "EOF" >> $GITHUB_ENV
 
       - name: Create Release
