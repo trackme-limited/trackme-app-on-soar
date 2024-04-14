@@ -56,8 +56,8 @@ jobs:
       - name: Get release notes
         run: |
           release_notes=$(cat release_notes/${{ env.version }}.md)
-          checksum_line="SHA256: ${sha256}"
-          formatted_release_notes="${checksum_line}\n\n${release_notes}"
+          echo "SHA256: ${sha256}" >> $GITHUB_ENV
+          echo "${release_notes}" >> $GITHUB_ENV
           echo "release_notes<<EOF" >> $GITHUB_ENV
           echo "${formatted_release_notes}" >> $GITHUB_ENV
           echo "EOF" >> $GITHUB_ENV
