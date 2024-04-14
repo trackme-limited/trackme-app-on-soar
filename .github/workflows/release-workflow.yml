@@ -57,14 +57,14 @@ jobs:
         run: |
           release_notes=$(cat release_notes/${{ env.version }}.md)
           checksum_line="SHA256: ${sha256}"
-          # Use a delimiter to start the multiline string
-          echo "release_notes<<EOF" >> $GITHUB_ENV
-          # Insert the formatted release notes including the checksum
-          echo "$checksum_line" >> $GITHUB_ENV
-          echo "" >> $GITHUB_ENV  # Ensures two new lines
-          cat release_notes/${{ env.version }}.md >> $GITHUB_ENV
-          # End the multiline string with the same delimiter
-          echo "EOF" >> $GITHUB_ENV
+          # Correctly use heredoc syntax to append to $GITHUB_ENV
+          {
+              echo "release_notes<<'EOF'"  # Use single quotes to avoid unwanted variable expansion in the delimiter line
+              echo "$checksum_line"
+              echo  # Adds one empty line for spacing
+              cat release_notes/${{ env.version }}.md
+              echo 'EOF'  # Close the heredoc with the same delimiter as a single line with no additional characters or spaces
+          } >> $GITHUB_ENV
 
       - name: Create Release
         id: create_release
